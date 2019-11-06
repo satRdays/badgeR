@@ -1,0 +1,16 @@
+Package: badgeR
+Title: Creates PDF with badges for conferences
+Version: 0.0.1
+Authors@R: 
+    person(given = "Dominik",
+           family = "Krzemiński",
+           role = c("aut", "cre"),
+           email = "raymon92@gmail.com")
+Description: This package allows you to easily create badges for conferences and other events.
+            Uses ticket package from LaTeX.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: glue,
+         dplyr
+RoxygenNote: 6.1.1
