@@ -38,3 +38,9 @@ For more advanced feature just read the docs.
 ```r
 ?create_badges
 ```
+
+### Gallery
+
+Example of badge created with this tool:
+
+![bdg](examples/sample.png)
