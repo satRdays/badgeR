@@ -50,7 +50,7 @@ DEFAULT_TEMPLATE <- "
 #' role (role at the event)
 #' @param output_file_name character with output pdf file name
 #' @param badge_width width (default: 52 [mm])
-#' @param badge_height height (default: 52 [mm])
+#' @param badge_height height (default: 78 [mm])
 #' @param event_name character with name of your event (default "Event")
 #' @param event_date character with date (default "")
 #' @param cards_per_page vector of length 2 with number of badges per page (default c(2, 3))
@@ -61,8 +61,10 @@ DEFAULT_TEMPLATE <- "
 #' @export
 #'
 #' @examples
-#' badges_data <- data.frame(first=c("AAAA", "BBBB"), second=c("XXXX", "ZZZZ"),
-#'                           role=c("speaker", "regular"))
+#' badges_data <- data.frame(first=c("AAAA", "BBBB"), # list of first names
+#'                           second=c("XXXX", "ZZZZ"), # list of second names
+#'                           role=c("speaker", "regular") # list of roles at the event
+#'                           )
 #' create_badges(badges_data)
 create_badges <- function(badges_data, output_file_name = NULL,
                           badge_width = 52, badge_height = 78, event_name = "Event",
