@@ -49,8 +49,9 @@ DEFAULT_TEMPLATE <- "
 #'
 #' This creates PDF with badges for your conference. It's saved in your default location.
 #'
-#' @param badges_data data.frame with fields: first (first name), second (second name),
-#' role (role at the event)
+#' @param badges_data data.frame with fields: first (first name, mandatory),
+#' second (second name), role (role at the event), extra (any additional
+#' information, eg. e-mail, company, gender pronouns, etc.)
 #' @param output_file_name character with output pdf file name
 #' @param badge_width width (default: 52 [mm])
 #' @param badge_height height (default: 78 [mm])
