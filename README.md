@@ -10,6 +10,14 @@ From github:
 ```
 devtools::install_github("CaRdiffR/badgeR")
 ```
+## LaTeX dependencies
+
+You will need to have LaTeX installed with the ticket and ifmslide packages. You can do this with:
+
+`tlmgr ticket ifmslide` on the command line.
+
+
+
 
 # How to use it?
 
