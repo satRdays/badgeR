@@ -1,17 +1,18 @@
-library(glue)
-library(dplyr)
-
 #' Make participant card
 #'
 #' @param first_name character with first name
 #' @param second_name character with second name
 #' @param role character with role at the event
+#' @param extra character miscellaneous information, eg.
+#' gender pronouns, email, etc
 #'
 #' @return character with confpin values filled in
-make_participant <- function(first_name, second_name = "", role = "") {
-  glue::glue("\\confpin{{{first_name}}}{{{second_name}}}{{{role}}}")
+#' @import glue
+make_participant <- function(first_name, second_name = "", role = "", extra = "") {
+  glue::glue("\\confpin{{{first_name}}}{{{second_name}}}{{{role}}}{{{extra}}}")
 }
 
+#' Default template
 DEFAULT_TEMPLATE <- "
 \\documentclass[a4paper,10pt]{{letter}}
 \\usepackage[utf8]{{inputenc}}
@@ -23,17 +24,19 @@ DEFAULT_TEMPLATE <- "
 \\ticketNumbers{{{cards_per_page_x}}}{{{cards_per_page_y}}}
 
 \\renewcommand{{\\ticketdefault}}{{
-\\put({logo_pos_x},  {footer_pos_y-12}){{\\includegraphics[width={graphics_size}]{{{graphic}}}}}
+\\put({logo_pos_x},  {footer_pos_y-16}){{\\includegraphics[width={graphics_size}]{{{graphic}}}}}
 \\put(0, {footer_pos_y}){{\\line(1,0){{{badge_width}}}}}
 \\put( 3,  {footer_pos_y-4}){{\\bfseries\\footnotesize {event_name}}}
 \\put( 3,  {footer_pos_y-8}){{\\footnotesize {event_date}}}
 }}
 
 % now what do you like to put in your ticket
-\\newcommand{{\\confpin}}[3]{{\\ticket{{%
+\\newcommand{{\\confpin}}[4]{{\\ticket{{%
 \\put({main_text_x},{main_text_y+20}){{\\makebox[0mm]{{\\bfseries\\huge #1}}}}
 \\put({main_text_x},{main_text_y+10}){{\\makebox[0mm]{{\\bfseries\\huge #2}}}}
 \\put({main_text_x},{main_text_y}){{\\makebox[0mm]{{\\large \\textit{{#3}}}}}}
+\\put({main_text_x},{main_text_y-10}){{\\makebox[0mm]{{#4}}}}
+
 }}}}
 
 \\begin{{document}}
@@ -66,6 +69,8 @@ DEFAULT_TEMPLATE <- "
 #'                           role=c("speaker", "regular") # list of roles at the event
 #'                           )
 #' create_badges(badges_data)
+#' @import dplyr
+#' @import glue
 create_badges <- function(badges_data, output_file_name = NULL,
                           badge_width = 52, badge_height = 78, event_name = "Event",
                           event_date = "", cards_per_page = c(2, 3), graphic = "ifmlogoc",
@@ -80,15 +85,19 @@ create_badges <- function(badges_data, output_file_name = NULL,
 
   footer_pos_x <- 3
   footer_pos_y <- round(badge_height*0.23)
-  logo_pos_x <- round(badge_width*0.63)
+  logo_pos_x <- round(badge_width*0.66)
 
   main_text_x <- round(badge_width/2)
   main_text_y <- round(badge_height/2)
 
   options(warn=-1)
+  for (col in c("second", "role", "extra")) {
+    if (! col%in% colnames(badges_data))
+      badges_data[[col]] <- ""
+  }
   cards <- paste((badges_data %>%
                     rowwise() %>%
-                    mutate(cardcode=make_participant(first, second, role)))$cardcode,
+                    mutate(cardcode = make_participant(first, second, role, extra)))$cardcode,
                  collapse = "\n")
   options(warn=0)
   s <- glue::glue(DEFAULT_TEMPLATE)
