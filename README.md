@@ -12,7 +12,7 @@ devtools::install_github("CaRdiffR/badgeR")
 ```
 ## LaTeX dependencies
 
-You will need to have LaTeX installed with the ticket and ifmslide packages. You can do this with:
+You will need to have LaTeX installed with the ticket and ifmslide packages. If you have a texlive installation you can do this with [`tlmgr` package and config manager](https://www.tug.org/texlive/tlmgr.html):
 
 `tlmgr ticket ifmslide` on the command line.
 
