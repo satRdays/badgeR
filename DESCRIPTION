@@ -11,6 +11,8 @@ Description: This package allows you to easily create badges for conferences and
 License: MIT
 Encoding: UTF-8
 LazyData: true
-Imports: glue,
-         dplyr
-RoxygenNote: 6.1.1
+Imports: 
+    glue,
+    dplyr,
+    magrittr
+RoxygenNote: 7.1.0
