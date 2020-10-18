@@ -22,5 +22,5 @@ create_badges(badges_data,
               event_date = "01/10/2010",
               badge_width = 70, badge_height = 90,
               event_name = "Super Conference",
-              graphic = "satrdays_logo.png",
+              graphic = system.file("satrdays_logo.png", package = "badgeR"),
               output_file_name = "my_conference_badges2.pdf")
