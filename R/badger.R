@@ -12,35 +12,8 @@ make_participant <- function(first_name, second_name = "", role = "") {
   glue::glue("\\confpin{{{first_name}}}{{{second_name}}}{{{role}}}")
 }
 
-DEFAULT_TEMPLATE <- "
-\\documentclass[a4paper,10pt]{{letter}}
-\\usepackage[utf8]{{inputenc}}
-\\usepackage[freepin,{edge_type}]{{ticket}}
-\\usepackage{{graphicx}}
-
-\\unitlength=1mm
-\\ticketSize{{{badge_width}}}{{{badge_height}}}
-\\ticketNumbers{{{cards_per_page_x}}}{{{cards_per_page_y}}}
-
-\\renewcommand{{\\ticketdefault}}{{
-\\put({logo_pos_x},  {footer_pos_y-12}){{\\includegraphics[width={graphics_size}]{{{graphic}}}}}
-\\put(0, {footer_pos_y}){{\\line(1,0){{{badge_width}}}}}
-\\put( 3,  {footer_pos_y-4}){{\\bfseries\\footnotesize {event_name}}}
-\\put( 3,  {footer_pos_y-8}){{\\footnotesize {event_date}}}
-}}
-
-% now what do you like to put in your ticket
-\\newcommand{{\\confpin}}[3]{{\\ticket{{%
-\\put({main_text_x},{main_text_y+20}){{\\makebox[0mm]{{\\bfseries\\huge #1}}}}
-\\put({main_text_x},{main_text_y+10}){{\\makebox[0mm]{{\\bfseries\\huge #2}}}}
-\\put({main_text_x},{main_text_y}){{\\makebox[0mm]{{\\large \\textit{{#3}}}}}}
-}}}}
-
-\\begin{{document}}
-\\sffamily
-{cards}
-\\end{{document}}
-"
+DEFAULT_TEMPLATE <- readLines("tex/default_template.tex") %>%
+  glue::glue_collapse("\n")
 
 #' Create badges
 #'
