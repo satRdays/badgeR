@@ -1,16 +1,17 @@
-library(glue)
-library(dplyr)
-
 #' Make participant card
 #'
 #' @param first_name character with first name
 #' @param second_name character with second name
 #' @param role character with role at the event
+#' @param extra character miscellaneous information, eg.
+#' gender pronouns, email, etc
 #'
 #' @return character with confpin values filled in
-make_participant <- function(first_name, second_name = "", role = "") {
-  glue::glue("\\confpin{{{first_name}}}{{{second_name}}}{{{role}}}")
+#' @import glue
+make_participant <- function(first_name, second_name = "", role = "", extra = "") {
+  glue::glue("\\confpin{{{first_name}}}{{{second_name}}}{{{role}}}{{{extra}}}")
 }
+
 
 DEFAULT_TEMPLATE <- readLines("tex/default_template.tex") %>%
   glue::glue_collapse("\n")
@@ -19,8 +20,9 @@ DEFAULT_TEMPLATE <- readLines("tex/default_template.tex") %>%
 #'
 #' This creates PDF with badges for your conference. It's saved in your default location.
 #'
-#' @param badges_data data.frame with fields: first (first name), second (second name),
-#' role (role at the event)
+#' @param badges_data data.frame with fields: first (first name, mandatory),
+#' second (second name), role (role at the event), extra (any additional
+#' information, eg. e-mail, company, gender pronouns, etc.)
 #' @param output_file_name character with output pdf file name
 #' @param badge_width width (default: 52 [mm])
 #' @param badge_height height (default: 78 [mm])
@@ -39,6 +41,8 @@ DEFAULT_TEMPLATE <- readLines("tex/default_template.tex") %>%
 #'                           role=c("speaker", "regular") # list of roles at the event
 #'                           )
 #' create_badges(badges_data)
+#' @import dplyr
+#' @import glue
 create_badges <- function(badges_data, output_file_name = NULL,
                           badge_width = 52, badge_height = 78, event_name = "Event",
                           event_date = "", cards_per_page = c(2, 3), graphic = "ifmlogoc",
@@ -53,15 +57,19 @@ create_badges <- function(badges_data, output_file_name = NULL,
 
   footer_pos_x <- 3
   footer_pos_y <- round(badge_height*0.23)
-  logo_pos_x <- round(badge_width*0.63)
+  logo_pos_x <- round(badge_width*0.66)
 
   main_text_x <- round(badge_width/2)
   main_text_y <- round(badge_height/2)
 
   options(warn=-1)
+  for (col in c("second", "role", "extra")) {
+    if (! col%in% colnames(badges_data))
+      badges_data[[col]] <- ""
+  }
   cards <- paste((badges_data %>%
                     rowwise() %>%
-                    mutate(cardcode=make_participant(first, second, role)))$cardcode,
+                    mutate(cardcode = make_participant(first, second, role, extra)))$cardcode,
                  collapse = "\n")
   options(warn=0)
   s <- glue::glue(DEFAULT_TEMPLATE)
