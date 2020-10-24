@@ -74,6 +74,7 @@ DEFAULT_TEMPLATE <- "
 #' @import dplyr
 #' @import glue
 #' @import tools
+#' @importFrom magrittr %>%
 create_badges <- function(badges_data, output_file_name = NULL,
                           badge_width = 52, badge_height = 78, event_name = "Event",
                           event_date = "", cards_per_page = c(2, 3), graphic = "ifmlogoc",
