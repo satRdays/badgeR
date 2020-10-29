@@ -93,7 +93,6 @@ create_badges <- function(badges_data, output_file_name = NULL,
 
   TEMPL <- read_template(template)
   s <- glue::glue(TEMPL, .open = "<<", .close = ">>")
-  print(s)
 
   temp_badge_code <- tempfile("badge", tmpdir=".", fileext=".tex")
   writeLines(s, con = temp_badge_code)
