@@ -19,7 +19,7 @@ make_participant <- function(first_name, second_name = "", role = "", extra = ""
 #'
 #' @return character with template from TeX
 #' @import glue
-read_template <- function(path) {
+read_template <- function(path = "default") {
   DEFAULT_TEMPLATE <- readLines(system.file("templates/default_template.tex",
                                             package = "badgeR")) %>%
                       glue::glue_collapse("\n")
