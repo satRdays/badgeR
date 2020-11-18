@@ -58,8 +58,11 @@ read_template <- function(path = "default") {
 #'                           role=c("speaker", "regular") # list of roles at the event
 #'                           )
 #' create_badges(badges_data)
+#'
 #' @import dplyr
 #' @import glue
+#' @import tools
+#' @importFrom magrittr %>%
 create_badges <- function(badges_data, output_file_name = NULL,
                           badge_width = 52, badge_height = 78, event_name = "Event",
                           event_date = "", cards_per_page = c(2, 3), graphic = "ifmlogoc",
@@ -86,8 +89,8 @@ create_badges <- function(badges_data, output_file_name = NULL,
       badges_data[[col]] <- ""
   }
   cards <- paste((badges_data %>%
-                    rowwise() %>%
-                    mutate(cardcode = make_participant(first, second, role, extra)))$cardcode,
+                    dplyr::rowwise() %>%
+                    dplyr::mutate(cardcode=make_participant(first, second, role)))$cardcode,
                  collapse = "\n")
   options(warn = 0)
 
